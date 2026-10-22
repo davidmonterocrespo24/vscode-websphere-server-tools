@@ -1,3 +1,5 @@
+<p align="center"><img src="media/icon.png" width="128" alt=""></p>
+
 <h1 align="center">WebSphere Server Tools</h1>
 
 <p align="center">
