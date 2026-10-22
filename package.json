@@ -1,0 +1,745 @@
+{
+  "name": "websphere-server-tools",
+  "displayName": "WebSphere Server Tools",
+  "description": "Start, stop, debug and hot-publish to a local IBM WebSphere Application Server (traditional) or WebSphere Portal, with Maven builds per module. Unofficial, not affiliated with IBM.",
+  "version": "0.3.0",
+  "publisher": "your-publisher-id",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Debuggers",
+    "Other"
+  ],
+  "keywords": [
+    "websphere",
+    "was",
+    "traditional",
+    "portal",
+    "maven",
+    "java",
+    "ear",
+    "war",
+    "wsadmin",
+    "jdwp",
+    "hot deploy"
+  ],
+  "galleryBanner": {
+    "color": "#1f2937",
+    "theme": "dark"
+  },
+  "main": "./out/extension.js",
+  "l10n": "./l10n",
+  "activationEvents": [
+    "workspaceContains:**/pom.xml"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "Runs Maven and WebSphere command line tools."
+    },
+    "virtualWorkspaces": false
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "wasTools.server.refresh",
+        "title": "%cmd.server.refresh%",
+        "category": "%category%",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "wasTools.server.start",
+        "title": "%cmd.server.start%",
+        "category": "%category%",
+        "icon": "$(play)"
+      },
+      {
+        "command": "wasTools.server.stop",
+        "title": "%cmd.server.stop%",
+        "category": "%category%",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "wasTools.server.restart",
+        "title": "%cmd.server.restart%",
+        "category": "%category%",
+        "icon": "$(debug-restart)"
+      },
+      {
+        "command": "wasTools.server.forceStop",
+        "title": "%cmd.server.forceStop%",
+        "category": "%category%",
+        "icon": "$(close)"
+      },
+      {
+        "command": "wasTools.server.attach",
+        "title": "%cmd.server.attach%",
+        "category": "%category%",
+        "icon": "$(debug-alt)"
+      },
+      {
+        "command": "wasTools.server.enableDebug",
+        "title": "%cmd.server.enableDebug%",
+        "category": "%category%",
+        "icon": "$(debug)"
+      },
+      {
+        "command": "wasTools.server.openApp",
+        "title": "%cmd.server.openApp%",
+        "category": "%category%",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "wasTools.server.openConsole",
+        "title": "%cmd.server.openConsole%",
+        "category": "%category%",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "wasTools.logs.follow",
+        "title": "%cmd.logs.follow%",
+        "category": "%category%",
+        "icon": "$(output)"
+      },
+      {
+        "command": "wasTools.logs.stopFollow",
+        "title": "%cmd.logs.stopFollow%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.logs.errors",
+        "title": "%cmd.logs.errors%",
+        "category": "%category%",
+        "icon": "$(warning)"
+      },
+      {
+        "command": "wasTools.logs.open",
+        "title": "%cmd.logs.open%",
+        "category": "%category%",
+        "icon": "$(go-to-file)"
+      },
+      {
+        "command": "wasTools.app.detect",
+        "title": "%cmd.app.detect%",
+        "category": "%category%",
+        "icon": "$(search)"
+      },
+      {
+        "command": "wasTools.app.publishWeb",
+        "title": "%cmd.app.publishWeb%",
+        "category": "%category%",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "wasTools.app.publishClasses",
+        "title": "%cmd.app.publishClasses%",
+        "category": "%category%",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "wasTools.app.publishModule",
+        "title": "%cmd.app.publishModule%",
+        "category": "%category%",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "wasTools.app.publishAllModules",
+        "title": "%cmd.app.publishAllModules%",
+        "category": "%category%",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "wasTools.app.restart",
+        "title": "%cmd.app.restart%",
+        "category": "%category%",
+        "icon": "$(debug-restart)"
+      },
+      {
+        "command": "wasTools.app.sharedLibs",
+        "title": "%cmd.app.sharedLibs%",
+        "category": "%category%",
+        "icon": "$(library)"
+      },
+      {
+        "command": "wasTools.maven.clean",
+        "title": "%cmd.maven.clean%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.maven.compile",
+        "title": "%cmd.maven.compile%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.maven.package",
+        "title": "%cmd.maven.package%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.maven.install",
+        "title": "%cmd.maven.install%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.maven.cleanInstall",
+        "title": "%cmd.maven.cleanInstall%",
+        "category": "%category%",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "wasTools.maven.test",
+        "title": "%cmd.maven.test%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.maven.run",
+        "title": "%cmd.maven.run%",
+        "category": "%category%",
+        "icon": "$(play)"
+      },
+      {
+        "command": "wasTools.maven.buildAndPublish",
+        "title": "%cmd.maven.buildAndPublish%",
+        "category": "%category%",
+        "icon": "$(cloud-upload)"
+      },
+      {
+        "command": "wasTools.maven.refresh",
+        "title": "%cmd.maven.refresh%",
+        "category": "%category%",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "wasTools.tools.listApps",
+        "title": "%cmd.tools.listApps%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.tools.backup",
+        "title": "%cmd.tools.backup%",
+        "category": "%category%",
+        "icon": "$(archive)"
+      },
+      {
+        "command": "wasTools.tools.trace",
+        "title": "%cmd.tools.trace%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.tools.addSigner",
+        "title": "%cmd.tools.addSigner%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.tools.listSigners",
+        "title": "%cmd.tools.listSigners%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.config.credentials",
+        "title": "%cmd.config.credentials%",
+        "category": "%category%",
+        "icon": "$(key)"
+      },
+      {
+        "command": "wasTools.config.forgetPassword",
+        "title": "%cmd.config.forgetPassword%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.config.detect",
+        "title": "%cmd.config.detect%",
+        "category": "%category%",
+        "icon": "$(search)"
+      },
+      {
+        "command": "wasTools.config.show",
+        "title": "%cmd.config.show%",
+        "category": "%category%"
+      },
+      {
+        "command": "wasTools.config.open",
+        "title": "%cmd.config.open%",
+        "category": "%category%",
+        "icon": "$(gear)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "wasTools",
+          "title": "%container%",
+          "icon": "media/was.svg"
+        }
+      ]
+    },
+    "views": {
+      "wasTools": [
+        {
+          "id": "wasTools.server",
+          "name": "%view.server%"
+        },
+        {
+          "id": "wasTools.maven",
+          "name": "%view.maven%"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "wasTools.maven",
+        "contents": "%welcome.maven%"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "wasTools.mavenMenu",
+        "label": "%submenu.maven%"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "wasTools.server.refresh",
+          "when": "view == wasTools.server",
+          "group": "navigation@1"
+        },
+        {
+          "command": "wasTools.logs.follow",
+          "when": "view == wasTools.server",
+          "group": "navigation@2"
+        },
+        {
+          "command": "wasTools.config.open",
+          "when": "view == wasTools.server",
+          "group": "navigation@9"
+        },
+        {
+          "command": "wasTools.maven.refresh",
+          "when": "view == wasTools.maven",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "wasTools.server.start",
+          "when": "view == wasTools.server && viewItem == server.stopped",
+          "group": "inline@1"
+        },
+        {
+          "command": "wasTools.server.attach",
+          "when": "view == wasTools.server && viewItem == server.running",
+          "group": "inline@1"
+        },
+        {
+          "command": "wasTools.server.restart",
+          "when": "view == wasTools.server && viewItem =~ /^server\\.(running|starting)$/",
+          "group": "inline@2"
+        },
+        {
+          "command": "wasTools.server.stop",
+          "when": "view == wasTools.server && viewItem =~ /^server\\.(running|starting)$/",
+          "group": "inline@3"
+        },
+        {
+          "command": "wasTools.server.forceStop",
+          "when": "view == wasTools.server && viewItem =~ /^server\\.(running|starting)$/",
+          "group": "9_danger"
+        },
+        {
+          "command": "wasTools.server.enableDebug",
+          "when": "view == wasTools.server && viewItem =~ /^server\\./",
+          "group": "1_debug"
+        },
+        {
+          "command": "wasTools.app.restart",
+          "when": "view == wasTools.server && viewItem =~ /^app\\./",
+          "group": "inline"
+        },
+        {
+          "command": "wasTools.app.publishWeb",
+          "when": "view == wasTools.server && viewItem == app.war",
+          "group": "1_publish@1"
+        },
+        {
+          "command": "wasTools.app.publishClasses",
+          "when": "view == wasTools.server && viewItem == app.war",
+          "group": "1_publish@2"
+        },
+        {
+          "command": "wasTools.app.publishAllModules",
+          "when": "view == wasTools.server && viewItem =~ /^app\\./",
+          "group": "1_publish@3"
+        },
+        {
+          "command": "wasTools.app.publishModule",
+          "when": "view == wasTools.server && viewItem == appModule",
+          "group": "inline"
+        },
+        {
+          "command": "wasTools.maven.cleanInstall",
+          "when": "view == wasTools.maven",
+          "group": "inline@1"
+        },
+        {
+          "command": "wasTools.maven.run",
+          "when": "view == wasTools.maven",
+          "group": "inline@2"
+        },
+        {
+          "submenu": "wasTools.mavenMenu",
+          "when": "view == wasTools.maven",
+          "group": "1_maven"
+        },
+        {
+          "command": "wasTools.maven.buildAndPublish",
+          "when": "view == wasTools.maven && viewItem == maven.module",
+          "group": "0_publish"
+        }
+      ],
+      "explorer/context": [
+        {
+          "submenu": "wasTools.mavenMenu",
+          "when": "resourceFilename == pom.xml || explorerResourceIsFolder",
+          "group": "7_modification@9"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "submenu": "wasTools.mavenMenu",
+          "when": "resourceFilename == pom.xml",
+          "group": "9_maven"
+        }
+      ],
+      "wasTools.mavenMenu": [
+        {
+          "command": "wasTools.maven.clean",
+          "group": "1_lifecycle@1"
+        },
+        {
+          "command": "wasTools.maven.compile",
+          "group": "1_lifecycle@2"
+        },
+        {
+          "command": "wasTools.maven.test",
+          "group": "1_lifecycle@3"
+        },
+        {
+          "command": "wasTools.maven.package",
+          "group": "1_lifecycle@4"
+        },
+        {
+          "command": "wasTools.maven.install",
+          "group": "1_lifecycle@5"
+        },
+        {
+          "command": "wasTools.maven.cleanInstall",
+          "group": "2_combined@1"
+        },
+        {
+          "command": "wasTools.maven.run",
+          "group": "2_combined@2"
+        },
+        {
+          "command": "wasTools.maven.buildAndPublish",
+          "group": "3_publish@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "wasTools.maven.buildAndPublish",
+          "when": "workspaceFolderCount > 0"
+        }
+      ]
+    },
+    "configuration": [
+      {
+        "title": "%cfg.server%",
+        "order": 1,
+        "properties": {
+          "wasTools.wasHome": {
+            "type": "string",
+            "default": "",
+            "order": 1,
+            "markdownDescription": "%cfg.wasHome%"
+          },
+          "wasTools.profilePath": {
+            "type": "string",
+            "default": "",
+            "order": 2,
+            "markdownDescription": "%cfg.profilePath%"
+          },
+          "wasTools.serverName": {
+            "type": "string",
+            "default": "",
+            "order": 3,
+            "markdownDescription": "%cfg.serverName%"
+          },
+          "wasTools.cell": {
+            "type": "string",
+            "default": "",
+            "order": 4,
+            "description": "%cfg.cell%"
+          },
+          "wasTools.node": {
+            "type": "string",
+            "default": "",
+            "order": 5,
+            "description": "%cfg.node%"
+          },
+          "wasTools.host": {
+            "type": "string",
+            "default": "localhost",
+            "order": 6,
+            "description": "%cfg.host%"
+          },
+          "wasTools.username": {
+            "type": "string",
+            "default": "",
+            "order": 7,
+            "markdownDescription": "%cfg.username%"
+          },
+          "wasTools.appUrl": {
+            "type": "string",
+            "default": "",
+            "order": 8,
+            "description": "%cfg.appUrl%"
+          },
+          "wasTools.portal.enabled": {
+            "type": "boolean",
+            "default": true,
+            "order": 9,
+            "description": "%cfg.portal%"
+          },
+          "wasTools.stopTimeoutMinutes": {
+            "type": "number",
+            "default": 10,
+            "order": 10,
+            "description": "%cfg.stopTimeout%"
+          },
+          "wasTools.pollSeconds": {
+            "type": "number",
+            "default": 10,
+            "order": 11,
+            "description": "%cfg.poll%"
+          },
+          "wasTools.consoleEncoding": {
+            "type": "string",
+            "default": "",
+            "order": 12,
+            "description": "%cfg.consoleEncoding%"
+          }
+        }
+      },
+      {
+        "title": "%cfg.ports%",
+        "order": 2,
+        "properties": {
+          "wasTools.ports.https": {
+            "type": "number",
+            "default": 0,
+            "description": "%cfg.ports.https%"
+          },
+          "wasTools.ports.http": {
+            "type": "number",
+            "default": 0,
+            "description": "%cfg.ports.http%"
+          },
+          "wasTools.ports.adminHttps": {
+            "type": "number",
+            "default": 0,
+            "description": "%cfg.ports.admin%"
+          },
+          "wasTools.ports.soap": {
+            "type": "number",
+            "default": 0,
+            "description": "%cfg.ports.soap%"
+          },
+          "wasTools.ports.debug": {
+            "type": "number",
+            "default": 0,
+            "description": "%cfg.ports.debug%"
+          }
+        }
+      },
+      {
+        "title": "Maven",
+        "order": 3,
+        "properties": {
+          "wasTools.maven.executable": {
+            "type": "string",
+            "default": "",
+            "description": "%cfg.mvn%"
+          },
+          "wasTools.maven.javaHome": {
+            "type": "string",
+            "default": "",
+            "markdownDescription": "%cfg.javaHome%"
+          },
+          "wasTools.maven.offline": {
+            "type": "boolean",
+            "default": false,
+            "description": "%cfg.offline%"
+          },
+          "wasTools.maven.skipTests": {
+            "type": "boolean",
+            "default": true,
+            "description": "%cfg.skipTests%"
+          },
+          "wasTools.maven.extraArgs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "description": "%cfg.extraArgs%"
+          },
+          "wasTools.maven.goals": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [],
+            "description": "%cfg.goals%"
+          }
+        }
+      },
+      {
+        "title": "%cfg.publish%",
+        "order": 4,
+        "properties": {
+          "wasTools.applications": {
+            "type": "array",
+            "default": [],
+            "markdownDescription": "%cfg.apps%",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "type",
+                "installedPath"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "%cfg.app.name%"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "war",
+                    "ear"
+                  ],
+                  "description": "%cfg.app.type%"
+                },
+                "installedPath": {
+                  "type": "string",
+                  "description": "%cfg.app.installed%"
+                },
+                "webProject": {
+                  "type": "string",
+                  "description": "%cfg.app.web%"
+                },
+                "webRoot": {
+                  "type": "string",
+                  "description": "%cfg.app.webRoot%"
+                },
+                "sharedLibraries": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "%cfg.app.libs%"
+                },
+                "modules": {
+                  "type": "array",
+                  "description": "%cfg.app.modules%",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "project",
+                      "target"
+                    ],
+                    "properties": {
+                      "project": {
+                        "type": "string",
+                        "description": "%cfg.mod.project%"
+                      },
+                      "target": {
+                        "type": "string",
+                        "description": "%cfg.mod.target%"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "wasTools.publish.onSave": {
+            "type": "boolean",
+            "default": false,
+            "description": "%cfg.onSave%"
+          },
+          "wasTools.publish.maxClassVersion": {
+            "type": "number",
+            "default": 0,
+            "description": "%cfg.maxClass%"
+          },
+          "wasTools.backupDir": {
+            "type": "string",
+            "default": "",
+            "description": "%cfg.backupDir%"
+          }
+        }
+      },
+      {
+        "title": "Logs",
+        "order": 5,
+        "properties": {
+          "wasTools.logs.ignorePatterns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": [
+              "CWSRV0255E",
+              "favicon\\.ico"
+            ],
+            "description": "%cfg.ignore%"
+          },
+          "wasTools.logs.encoding": {
+            "type": "string",
+            "default": "latin1",
+            "description": "%cfg.logEnc%"
+          }
+        }
+      }
+    ],
+    "taskDefinitions": [
+      {
+        "type": "wasTools",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "manifest": "node scripts/gen-manifest.js",
+    "compile": "node scripts/gen-manifest.js && tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "l10n": "npx @vscode/l10n-dev export --outDir ./l10n ./src",
+    "package": "npm run compile && vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "~1.90.0",
+    "@vscode/l10n-dev": "^0.0.35",
+    "@vscode/vsce": "^3.2.0",
+    "typescript": "^5.4.0"
+  }
+}
