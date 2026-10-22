@@ -11,7 +11,7 @@ export class ServerNode extends vscode.TreeItem {
   constructor(i: ServerInfo) {
     const e = env();
     super(e.server ?? vscode.l10n.t('No server found'), vscode.TreeItemCollapsibleState.None);
-    this.description = stateLabel(i.state) + (i.debugListening ? ` · debug ${e.debugPort}` : '');
+    this.description = stateLabel(i.state) + (i.debug === 'listening' ? ` · debug ${e.debugPort}` : i.debug === 'attached' ? ` · ${vscode.l10n.t('debugger attached')}` : '');
     this.contextValue = `server.${i.state}`;
     const color = { running: 'testing.iconPassed', starting: 'testing.iconQueued', stopped: 'testing.iconFailed', unknown: 'disabledForeground' }[i.state];
     this.iconPath = new vscode.ThemeIcon(i.state === 'starting' ? 'loading~spin' : 'circle-filled', new vscode.ThemeColor(color));

@@ -11,10 +11,39 @@ const ext = isWin ? '.bat' : '.sh';
 
 export type State = 'running' | 'starting' | 'stopped' | 'unknown';
 
+/** off = nothing on the port; listening = free for a debugger; attached = a debugger is already connected */
+export type DebugState = 'off' | 'listening' | 'attached';
+
 export interface ServerInfo {
   state: State;
-  debugListening: boolean;
+  debug: DebugState;
   pid?: number;
+}
+
+/**
+ * State of the JDWP port read from the OS socket table, WITHOUT connecting to it: a JDWP agent
+ * accepts a single connection and logs "JDWP-Handshake ... premature EOF" for every probe, so a
+ * TCP probe could even steal the connection from the real debugger.
+ */
+export function debugPortState(port: number): Promise<DebugState> {
+  return new Promise(resolve => {
+    const done = (out: string) => {
+      const onLocal = out.split(/\r?\n/).filter(l => {
+        const cols = l.trim().split(/\s+/);
+        // Windows netstat: Proto Local Foreign State PID; ss: State Recv Send Local Peer
+        const localCol = isWin ? cols[1] : cols[3];
+        return !!localCol && new RegExp(`[:.]${port}$`).test(localCol);
+      });
+      if (onLocal.some(l => /LISTEN/i.test(l))) { resolve('listening'); return; }
+      if (onLocal.some(l => /ESTAB/i.test(l))) { resolve('attached'); return; }
+      resolve('off');
+    };
+    if (isWin) {
+      execFile('netstat', ['-ano', '-p', 'tcp'], { windowsHide: true, timeout: 10000, maxBuffer: 8 * 1024 * 1024 }, (_e, out) => done(out ?? ''));
+    } else {
+      execFile('ss', ['-tan'], { timeout: 10000 }, (err, out) => err ? resolve('off') : done(out ?? ''));
+    }
+  });
 }
 
 export function portOpen(host: string, port: number, timeoutMs = 800): Promise<boolean> {
@@ -79,7 +108,7 @@ function kill(pid: number): void {
 export class ServerMonitor implements vscode.Disposable {
   private readonly emitter = new vscode.EventEmitter<ServerInfo>();
   readonly onChange = this.emitter.event;
-  info: ServerInfo = { state: 'unknown', debugListening: false };
+  info: ServerInfo = { state: 'unknown', debug: 'off' };
   private timer: NodeJS.Timeout | undefined;
   private busy = false;
 
@@ -100,17 +129,17 @@ export class ServerMonitor implements vscode.Disposable {
       const e = env();
       let next: ServerInfo;
       if (!e.profilePath || !e.server) {
-        next = { state: 'unknown', debugListening: false };
+        next = { state: 'unknown', debug: 'off' };
       } else {
-        const [up, dbg] = await Promise.all([portOpen(e.host, e.ports.https), portOpen(e.host, e.debugPort)]);
+        const [up, dbg] = await Promise.all([portOpen(e.host, e.ports.https), debugPortState(e.debugPort)]);
         if (up) {
-          next = { state: 'running', debugListening: dbg, pid: this.info.pid };
+          next = { state: 'running', debug: dbg, pid: this.info.pid };
         } else {
           const pid = await serverPid();
-          next = { state: pid ? 'starting' : 'stopped', debugListening: dbg, pid };
+          next = { state: pid ? 'starting' : 'stopped', debug: dbg, pid };
         }
       }
-      const changed = next.state !== this.info.state || next.debugListening !== this.info.debugListening;
+      const changed = next.state !== this.info.state || next.debug !== this.info.debug;
       this.info = next;
       if (changed || force) { this.emitter.fire(next); }
       return next;

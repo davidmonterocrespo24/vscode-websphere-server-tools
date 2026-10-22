@@ -157,5 +157,8 @@
   "2) Portal XMLAccess export": "2) Export XMLAccess del Portal",
   "ExportRelease.xml not found: skipping the Portal export.": "No se encontró ExportRelease.xml: se omite el export del Portal.",
   "The export failed or is empty (is the server running?).": "El export falló o está vacío (¿está corriendo el servidor?).",
-  "   {0}: {1} pages, {2} portlet instances": "   {0}: {1} páginas, {2} instancias de portlet"
+  "   {0}: {1} pages, {2} portlet instances": "   {0}: {1} páginas, {2} instancias de portlet",
+  "debugger attached": "depurador conectado",
+  "The debugger is already attached to {0} (session \"{1}\").": "El depurador ya está conectado a {0} (sesión \"{1}\").",
+  "Another debugger is already connected to port {0} (JDWP accepts only one). Stop that debug session, or the other IDE, and try again.": "Ya hay otro depurador conectado al puerto {0} (JDWP acepta uno solo). Pará esa sesión de depuración (o el otro IDE) y volvé a intentar."
 }

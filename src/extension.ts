@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext): void {
     const i = monitor.info;
     if (i.state === 'unknown') { status.hide(); return; }
     const icon = { running: '$(pass-filled)', starting: '$(sync~spin)', stopped: '$(circle-slash)', unknown: '' }[i.state];
-    status.text = `${icon} ${env().server} ${server.stateLabel(i.state)}${i.debugListening ? ` · $(debug-alt) ${env().debugPort}` : ''}`;
+    status.text = `${icon} ${env().server} ${server.stateLabel(i.state)}${i.debug === 'attached' ? ' · $(debug)' : i.debug === 'listening' ? ` · $(debug-alt) ${env().debugPort}` : ''}`;
     status.tooltip = vscode.l10n.t('WebSphere server — click to open the panel');
     status.show();
   };
@@ -43,6 +43,13 @@ export function activate(context: vscode.ExtensionContext): void {
       try { return await fn(...a); }
       catch (err) { void vscode.window.showErrorMessage(err instanceof Error ? err.message : String(err)); }
     }));
+
+  // Java debug sessions in this window: the debug port state changes when they start/stop
+  const activeJavaSessions = new Set<vscode.DebugSession>();
+  context.subscriptions.push(
+    vscode.debug.onDidStartDebugSession(s => { if (s.type === 'java') { activeJavaSessions.add(s); setTimeout(() => void monitor.refresh(true), 1500); } }),
+    vscode.debug.onDidTerminateDebugSession(s => { if (activeJavaSessions.delete(s)) { setTimeout(() => void monitor.refresh(true), 1500); } }),
+  );
 
   const pomWatcher = vscode.workspace.createFileSystemWatcher('**/pom.xml');
   pomWatcher.onDidCreate(() => mavenTree.refresh());
@@ -97,7 +104,21 @@ export function activate(context: vscode.ExtensionContext): void {
       return;
     }
     const i = await monitor.refresh(true);
-    if (!i.debugListening) {
+    if (i.debug === 'attached') {
+      // JDWP accepts a single debugger: if it is ours, show it; otherwise say who has it
+      const session = [...activeJavaSessions, vscode.debug.activeDebugSession].find(s =>
+        s?.type === 'java' && s.configuration.request === 'attach' && Number(s.configuration.port) === e.debugPort);
+      if (session) {
+        vscode.debug.activeDebugSession = session;
+        await vscode.commands.executeCommand('workbench.view.debug');
+        void vscode.window.showInformationMessage(vscode.l10n.t('The debugger is already attached to {0} (session "{1}").', e.server ?? '', session.name));
+      } else {
+        void vscode.window.showWarningMessage(vscode.l10n.t(
+          'Another debugger is already connected to port {0} (JDWP accepts only one). Stop that debug session, or the other IDE, and try again.', e.debugPort));
+      }
+      return;
+    }
+    if (i.debug !== 'listening') {
       const enable = vscode.l10n.t('Enable debug mode');
       const r = await vscode.window.showErrorMessage(
         vscode.l10n.t('Nothing listens on debug port {0} (server {1}). Is the server running with debug mode enabled?', e.debugPort, server.stateLabel(i.state)),

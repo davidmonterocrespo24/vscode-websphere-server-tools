@@ -1,5 +1,6 @@
 {
   "No server found": "No server found",
+  "debugger attached": "debugger attached",
   "Detect environment": "Detect environment",
   "Profile": "Profile",
   "Cell / node": "Cell / node",
@@ -82,6 +83,8 @@
   "Kill the server process without a clean shutdown?": "Kill the server process without a clean shutdown?",
   "Install": "Install",
   "Attaching needs the \"Debugger for Java\" extension.": "Attaching needs the \"Debugger for Java\" extension.",
+  "The debugger is already attached to {0} (session \"{1}\").": "The debugger is already attached to {0} (session \"{1}\").",
+  "Another debugger is already connected to port {0} (JDWP accepts only one). Stop that debug session, or the other IDE, and try again.": "Another debugger is already connected to port {0} (JDWP accepts only one). Stop that debug session, or the other IDE, and try again.",
   "Enable debug mode": "Enable debug mode",
   "Nothing listens on debug port {0} (server {1}). Is the server running with debug mode enabled?": "Nothing listens on debug port {0} (server {1}). Is the server running with debug mode enabled?",
   "JDWP debug port": "JDWP debug port",
