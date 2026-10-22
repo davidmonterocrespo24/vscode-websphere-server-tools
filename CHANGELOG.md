@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1
+
+- New icon.
+- Settings: *Write Detected Values to Settings* command; *Open Settings* opens the Workspace tab, where the project values live.
+- Debug: the debug port state is read from the OS socket table (no JDWP probe); an already attached debugger is detected.
+
 ## 0.3.0
 
 - Generic product: auto-detection of WAS install, profiles, cell/node/server, ports, debug port, Portal and the server JDK.
