@@ -2,7 +2,7 @@
   "name": "websphere-server-tools",
   "displayName": "WebSphere Server Tools",
   "description": "Start, stop, debug and hot-publish to a local IBM WebSphere Application Server (traditional) or WebSphere Portal, with Maven builds per module. Unofficial, not affiliated with IBM.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "publisher": "DavidMonteroCrespo",
   "license": "MIT",
   "icon": "media/icon.png",

@@ -65,6 +65,10 @@ Run **WebSphere: Show Resolved Environment** at any time to see every value in u
 
 ## The panel
 
+<p align="center"><img src="media/panel.png" width="380" alt="WebSphere view: server, applications, logs, tools and configuration"></p>
+
+With applications detected, each one can be published and restarted from the tree:
+
 ```
 WEBSPHERE
 ├─ SERVER

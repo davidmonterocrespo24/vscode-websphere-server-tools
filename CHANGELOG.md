@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+
+- README: screenshot of the WebSphere view.
+
 ## 0.3.1
 
 - New icon.
