@@ -1,5 +1,6 @@
 {
   "No server found": "No se encontró servidor",
+  "debugger attached": "depurador conectado",
   "Detect environment": "Detectar ambiente",
   "Profile": "Perfil",
   "Cell / node": "Celda / nodo",
@@ -28,6 +29,7 @@
   "none": "ninguno",
   "Detect environment…": "Detectar ambiente…",
   "Show resolved environment": "Mostrar ambiente resuelto",
+  "Write detected values to settings…": "Guardar valores detectados en la configuración…",
   "Settings…": "Configuración…",
   "Publish web resources (xhtml, js, css…)": "Publicar recursos web (xhtml, js, css…)",
   "Copies changed files of the web root to the installed application.": "Copia los archivos cambiados del web root a la aplicación instalada.",
@@ -82,6 +84,8 @@
   "Kill the server process without a clean shutdown?": "¿Matar el proceso del servidor sin un apagado limpio?",
   "Install": "Instalar",
   "Attaching needs the \"Debugger for Java\" extension.": "Para conectar el depurador hace falta la extensión \"Debugger for Java\".",
+  "The debugger is already attached to {0} (session \"{1}\").": "El depurador ya está conectado a {0} (sesión \"{1}\").",
+  "Another debugger is already connected to port {0} (JDWP accepts only one). Stop that debug session, or the other IDE, and try again.": "Ya hay otro depurador conectado al puerto {0} (JDWP acepta uno solo). Pará esa sesión de depuración (o el otro IDE) y volvé a intentar.",
   "Enable debug mode": "Activar modo depuración",
   "Nothing listens on debug port {0} (server {1}). Is the server running with debug mode enabled?": "Nada escucha en el puerto de depuración {0} (servidor {1}). ¿Está corriendo con el modo depuración activado?",
   "JDWP debug port": "Puerto de depuración JDWP",
@@ -141,6 +145,12 @@
   "Server": "Servidor",
   "The profile {0} has no application server.": "El perfil {0} no tiene servidor de aplicaciones.",
   "Using {0} / {1} (ports: https {2}, admin {3}, soap {4}, debug {5}).": "Usando {0} / {1} (puertos: https {2}, admin {3}, soap {4}, depuración {5}).",
+  "Write detected values": "Guardar valores detectados",
+  "Every detected value is already in the settings.": "Todos los valores detectados ya están en la configuración.",
+  "Write detected values to the workspace settings": "Guardar valores detectados en la configuración del área de trabajo",
+  "Written values are fixed: they no longer follow changes in the server configuration": "Los valores guardados quedan fijos: ya no siguen los cambios de la configuración del servidor",
+  "Open Settings": "Abrir configuración",
+  "{0} values written to the workspace settings.": "{0} valores guardados en la configuración del área de trabajo.",
   "Auto-detected: {0}": "Autodetectado: {0}",
   "WebSphere administrator user (leave empty if administrative security is disabled)": "Usuario administrador de WebSphere (vacío si la seguridad administrativa está apagada)",
   "Password for {0}": "Contraseña de {0}",
@@ -157,8 +167,5 @@
   "2) Portal XMLAccess export": "2) Export XMLAccess del Portal",
   "ExportRelease.xml not found: skipping the Portal export.": "No se encontró ExportRelease.xml: se omite el export del Portal.",
   "The export failed or is empty (is the server running?).": "El export falló o está vacío (¿está corriendo el servidor?).",
-  "   {0}: {1} pages, {2} portlet instances": "   {0}: {1} páginas, {2} instancias de portlet",
-  "debugger attached": "depurador conectado",
-  "The debugger is already attached to {0} (session \"{1}\").": "El depurador ya está conectado a {0} (sesión \"{1}\").",
-  "Another debugger is already connected to port {0} (JDWP accepts only one). Stop that debug session, or the other IDE, and try again.": "Ya hay otro depurador conectado al puerto {0} (JDWP acepta uno solo). Pará esa sesión de depuración (o el otro IDE) y volvé a intentar."
+  "   {0}: {1} pages, {2} portlet instances": "   {0}: {1} páginas, {2} instancias de portlet"
 }

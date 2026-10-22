@@ -356,7 +356,9 @@ export function activate(context: vscode.ExtensionContext): void {
   // ------------------------------------------------------------ configuration
   reg('wasTools.config.credentials', async () => { await configureCredentials(); serverTree.refresh(); });
   reg('wasTools.config.forgetPassword', forgetPassword);
-  reg('wasTools.config.open', () => vscode.commands.executeCommand('workbench.action.openSettings', `@ext:${context.extension.id}`));
+  // workspace tab: that is where the project's values live (the user tab would look empty)
+  reg('wasTools.config.open', () => vscode.commands.executeCommand(
+    workspaceRoot() ? 'workbench.action.openWorkspaceSettings' : 'workbench.action.openSettings', { query: `@ext:${context.extension.id}` }));
   reg('wasTools.config.detect', async () => {
     const profiles = detect.allProfiles([vscode.workspace.getConfiguration('wasTools').get<string>('wasHome') ?? ''].filter(Boolean));
     if (!profiles.length) {
@@ -378,8 +380,34 @@ export function activate(context: vscode.ExtensionContext): void {
     const e = env();
     const msg = vscode.l10n.t('Using {0} / {1} (ports: https {2}, admin {3}, soap {4}, debug {5}).', prof.name, srv.server, e.ports.https, e.ports.adminHttps, e.ports.soap, e.debugPort);
     const apps = vscode.l10n.t('Detect applications');
-    if (await vscode.window.showInformationMessage(msg, apps) === apps) { await vscode.commands.executeCommand('wasTools.app.detect'); }
+    const save = vscode.l10n.t('Write detected values');
+    const choice = await vscode.window.showInformationMessage(msg, apps, save);
+    if (choice === apps) { await vscode.commands.executeCommand('wasTools.app.detect'); }
+    if (choice === save) { await vscode.commands.executeCommand('wasTools.config.saveDetected'); }
     await refreshAll();
+  });
+  // Auto-detected values live only in memory, so the settings UI shows those fields empty:
+  // this writes the chosen ones to the workspace settings (they stop following serverindex.xml).
+  reg('wasTools.config.saveDetected', async () => {
+    const e = env();
+    const values: Record<string, unknown> = {
+      wasHome: e.wasHome, profilePath: e.profilePath, serverName: e.server, cell: e.cell, node: e.node,
+      'ports.https': e.ports.https, 'ports.http': e.ports.http, 'ports.adminHttps': e.ports.adminHttps, 'ports.soap': e.ports.soap,
+      'ports.debug': e.debugPort, 'maven.javaHome': e.javaHome, 'maven.executable': e.mavenCmd, 'publish.maxClassVersion': e.maxClassVersion,
+    };
+    const items = e.detected.filter(k => values[k] !== undefined && values[k] !== '')
+      .map(k => ({ label: `wasTools.${k}`, description: String(values[k]), picked: true, k }));
+    if (!items.length) { void vscode.window.showInformationMessage(vscode.l10n.t('Every detected value is already in the settings.')); return; }
+    const chosen = await vscode.window.showQuickPick(items, {
+      canPickMany: true, title: vscode.l10n.t('Write detected values to the workspace settings'),
+      placeHolder: vscode.l10n.t('Written values are fixed: they no longer follow changes in the server configuration'),
+    });
+    if (!chosen?.length) { return; }
+    for (const c of chosen) { await update(c.k, values[c.k]); }
+    const open = vscode.l10n.t('Open Settings');
+    if (await vscode.window.showInformationMessage(vscode.l10n.t('{0} values written to the workspace settings.', chosen.length), open) === open) {
+      await vscode.commands.executeCommand('wasTools.config.open');
+    }
   });
   reg('wasTools.config.show', () => {
     const e = env();

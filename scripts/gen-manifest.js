@@ -49,6 +49,7 @@ const commands = [
   ['config.forgetPassword', 'Forget Saved Password', 'Olvidar contraseña guardada'],
   ['config.detect', 'Detect Environment', 'Detectar ambiente', '$(search)'],
   ['config.show', 'Show Resolved Environment', 'Mostrar ambiente resuelto'],
+  ['config.saveDetected', 'Write Detected Values to Settings', 'Guardar valores detectados en la configuración', '$(save)'],
   ['config.open', 'Open Settings', 'Abrir configuración', '$(gear)'],
 ];
 
@@ -118,7 +119,7 @@ const contributes = {
       title: s('cfg.server', 'Server', 'Servidor'),
       order: 1,
       properties: {
-        'wasTools.wasHome': { type: 'string', default: '', order: 1, markdownDescription: s('cfg.wasHome', 'WebSphere install root (contains `bin/` and `properties/profileRegistry.xml`). Empty = auto-detect.', 'Raíz de la instalación de WebSphere (contiene `bin/` y `properties/profileRegistry.xml`). Vacío = autodetectar.') },
+        'wasTools.wasHome': { type: 'string', default: '', order: 1, markdownDescription: s('cfg.wasHome', 'WebSphere install root (contains `bin/` and `properties/profileRegistry.xml`). Empty = auto-detect.\n\nEmpty fields are resolved automatically at run time and are **not** written here; see *WebSphere: Show Resolved Environment*, or fill them with *WebSphere: Write Detected Values to Settings*. Values of the opened project are in the **Workspace** tab.', 'Raíz de la instalación de WebSphere (contiene `bin/` y `properties/profileRegistry.xml`). Vacío = autodetectar.\n\nLos campos vacíos se resuelven solos al ejecutar y **no** se escriben acá; ver *WebSphere: Mostrar ambiente resuelto*, o completarlos con *WebSphere: Guardar valores detectados en la configuración*. Los valores del proyecto abierto están en la pestaña **Área de trabajo**.') },
         'wasTools.profilePath': { type: 'string', default: '', order: 2, markdownDescription: s('cfg.profilePath', 'Profile folder (e.g. `C:\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01`). Empty = default profile of `profileRegistry.xml`.', 'Carpeta del perfil (ej. `C:\\IBM\\WebSphere\\AppServer\\profiles\\AppSrv01`). Vacío = perfil por defecto de `profileRegistry.xml`.') },
         'wasTools.serverName': { type: 'string', default: '', order: 3, markdownDescription: s('cfg.serverName', 'Application server name (e.g. `server1`, `WebSphere_Portal`). Empty = the profile\'s only server.', 'Nombre del servidor (ej. `server1`, `WebSphere_Portal`). Vacío = el único servidor del perfil.') },
         'wasTools.cell': { type: 'string', default: '', order: 4, description: s('cfg.cell', 'Cell. Empty = from the profile configuration.', 'Celda. Vacío = de la configuración del perfil.') },

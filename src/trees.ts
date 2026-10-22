@@ -111,6 +111,7 @@ export class ServerTree implements vscode.TreeDataProvider<vscode.TreeItem> {
         new Action(vscode.l10n.t('User and password ({0})…', e.username || vscode.l10n.t('none')), 'wasTools.config.credentials', 'key'),
         new Action(vscode.l10n.t('Detect environment…'), 'wasTools.config.detect', 'search'),
         new Action(vscode.l10n.t('Show resolved environment'), 'wasTools.config.show', 'info'),
+        new Action(vscode.l10n.t('Write detected values to settings…'), 'wasTools.config.saveDetected', 'save'),
         new Action(vscode.l10n.t('Settings…'), 'wasTools.config.open', 'settings'),
       ], false, 'g:config'),
     ];
