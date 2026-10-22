@@ -17,7 +17,7 @@
 
 ---
 
-Eclipse-based IDEs such as Rational Software Architect or WebSphere Developer Tools are heavy and slow, and IBM's VS Code tooling only covers Liberty. **WebSphere Server Tools** brings their daily workflow to VS Code: start and stop the server, attach the debugger, build Maven modules one by one, and copy the result into the running server in seconds, without reinstalling the application.
+Rational Software Architect and WebSphere Developer Tools are official IBM tools, but if you want to use VS Code, you can use WebSphere Server Tools. It transfers your daily workflow to VS Code: start and stop the server, connect the debugger, compile Maven modules one by one, and copy the result to the running server in seconds, without needing to reinstall the application.
 
 > **Unofficial community project.** It is not affiliated with, endorsed or supported by IBM. *IBM* and *WebSphere* are trademarks of International Business Machines Corp.
 
